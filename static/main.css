@@ -1,0 +1,25 @@
+.row {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+div.code {
+    border: 1px solid;
+    border-color: rgb(var(--bs-secondary));
+    background: rgba(var(--bs-light-rgb), 1);
+    border-radius: .25rem;
+    padding: 1vh;
+    overflow: auto;
+}
+
+div.pre {
+    white-space: pre-wrap;
+}
+
+td, th {
+    padding: 1vh;
+}
+
+.selected_table {
+    background-color: #ffc107;
+}
