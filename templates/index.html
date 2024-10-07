@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-9">
+        <h3>Главная страница</h3>
+    </div>
+</div>
+<hr>
+{% for el in titles %}
+    <div class="row" style="padding-top:1vh; padding-bottom: 1vh">
+        <a class="btn btn-outline-primary" href="/contest/{{el.theme_index}}/A">{{el.theme_text}}</a>
+    </div>
+{% endfor %}
+<hr>
+<div class="row" style="padding: 2vh">
+    <a class="btn btn-outline-primary" href="/rating">К рейтингу</a>
+    <a href="/static/Лекции.pdf" class="btn btn-outline-primary">Конспект лекций</a>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ url_for('static', filename='bootstrap.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+    <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet">
+    {% if current_user.style == 'dark' %}
+        <link href="{{ url_for('static', filename='dark.css')}}" rel="stylesheet">
+    {% endif %}
+    {% if current_user.style == 'ortem' %}
+        <link href="{{ url_for('static', filename='ortem.css')}}" rel="stylesheet">
+    {% endif %}
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+    <script type="text/javascript" src="/static/MathJax/MathJax.js"></script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="row" style="padding-top: 1vh; padding-bottom: 1vh">
+                <div class="col-md-4"><a class="link-secondary text-decoration-none" href="/"><h2>Зимняя смена 2023</h2></a></div>
+                <div class="col-md-5"></div>
+                <div class="col-md-3">
+                    {% if current_user.is_authenticated %}
+                        <input type="text" name="name" value="{{current_user.name}}" readonly=true class="form-control">
+                        <a type="submit" style="width: 100%" class="btn btn-outline-secondary" href="/logout">Выйти</a>
+                    {% else %}
+                        <form method="post" action="/login">
+                            <input type="text" name="name" placeholder="Имя" class="form-control" maxlength="15">
+                            <input type="submit" style="width: 100%" class="btn btn-outline-primary" value="Войти">
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+
+        {% block body %}{% endblock %}
+
+        <footer>
+            <div class="row">
+                <div class="col-4">
+                    <h5>О сайте</h5>
+                    <ul class="list-unstyled text-small">
+                        <li class="mb-1">
+                            <form method='post' action="/change_theme">
+                                <input name="last" type="text" hidden id="href">
+                                <input type="submit" class="btn btn-secondary" value="Сменить тему">
+                            </form>
+                        </li>
+                        <li class="mb-1"><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="link-secondary text-decoration-none">Nothing to see here</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.getElementById("href").value = window.location.href;
+    </script>
+</body>
+</html>

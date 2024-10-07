@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{content.task.theme_text}}
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <a class="btn btn-outline-primary" href="/">Назад к контестам</a>
+</div>
+<div class="row">
+    <div class="col-9">
+        <div class="row">
+            <h1>{{content.task.task_text}}</h1>
+            {% if content.task.description %}
+                <h3>Описание</h3>
+                <div class="pre">{{content.task.description | safe}}</div>
+            {% endif %}
+            {% if content.task.inputs %}
+                <h3>Формат Входа</h3>
+                <div class="pre">{{content.task.inputs}}</div>
+            {% endif %}
+            {% if content.task.outputs %}
+                <h3>Формат Выхода</h3>
+                <div class="pre">{{content.task.outputs}}</div>
+            {% endif %}
+            {% if content.len == 1 %}
+                <table class="table table-striped" style="table-layout: fixed">
+                    <tr></tr>
+                    <tr>
+                        <th colspan="2"><h3>Пример</h3></th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <div>Ввод</div>
+                        </th>
+                        <th>
+                            <div>Вывод</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="pre">{{content.task.example_inputs}}</div>
+                        </td>
+                        <td>
+                            <div class="pre">{{content.task.example_outputs}}</div>
+                        </td>
+                    </tr>
+                </table>
+            {% elif content.len > 1 %}
+                <table class="table table-striped" style="table-layout: fixed">
+                    {% for example in content.examples %}
+                        <tr></tr>
+                        <tr>
+                            <th colspan="2"><h3>Пример {{example[0]+1}}</h3></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Ввод
+                            </th>
+                            <th>
+                                Вывод
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <pre>{{example[1].inputs}}</pre>
+                            </td>
+                            <td>
+                                <pre>{{example[1].outputs}}</pre>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+        <div class="row">
+            <form method="post" enctype="multipart/form-data" action="/load_file">
+                <input hidden type="text" name="theme_index" value="{{content.task.theme_index}}">
+                <input hidden type="text" name="task_index" value="{{content.task.task_index}}">
+                <div class="row">
+                    <div class="col-10">
+                        <input class="form-control" type="file" name="file">
+                    </div>
+                    <div class="col-2">
+                        <input class="btn btn-primary" type="submit" value="Загрузить" style="width: 100%">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Время посылки</th>
+                        <th scope="col">Вердикт</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for el in content.packages %}
+                        <tr>
+                            <th>{{el.time_stamp}}</th>
+                            <th>{% if el.success == 1 %}
+                            <p class="text-success">OK</p>
+                            {% elif el.success == 0 %}
+                            <p class="text-danger">WA</p>
+                            {% elif el.success == -1 %}
+                            <p class="text-danger">ER</p>
+                            {% elif el.success == -2 %}
+                            <p class="text-danger">FE</p>
+                            {% elif el.success == -3 %}
+                            <p class="text-danger">SI</p>
+                            {% elif el.success == -4 %}
+                            <p class="text-danger">TL</p>
+                            {% endif %}</th>
+                            <th><a href="/about/{{el.id}}">Подробнее</a></th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-3">
+        {% for el in content.titles %}
+            {% if el.task_index == content.task.task_index %}
+                {% if (el.task_index,) in content.success %}
+                    <a class="btn btn-success" style="width: 100%" href="/contest/{{content.task.theme_index}}/{{el.task_index}}">{{el.task_text}}</a>
+                {% else %}
+                    <a class="btn btn-secondary" style="width: 100%" href="/contest/{{content.task.theme_index}}/{{el.task_index}}">{{el.task_text}}</a>
+                {% endif %}
+            {% else %}
+                {% if (el.task_index,) in content.success %}
+                    <a class="btn btn-outline-success" style="width: 100%" href="/contest/{{content.task.theme_index}}/{{el.task_index}}">{{el.task_text}}</a>
+                {% else %}
+                    <a class="btn btn-outline-secondary" style="width: 100%" href="/contest/{{content.task.theme_index}}/{{el.task_index}}">{{el.task_text}}</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

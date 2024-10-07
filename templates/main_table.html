@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Общая таблица
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <a class="btn btn-outline-primary" href="/">Назад к списку контестов</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Имена</th>
+            {% for el in content.contests %}
+                <th>{{el[0]}}</th>
+            {% endfor %}
+            <th>Всего</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for el in content.students %}
+            {% if el.name == current_user.name %}
+                <tr class="selected_table">
+            {% else %}
+                <tr>
+            {% endif %}
+                    <th>{{el.name}}</th>
+                    {% for i in el.contests %}
+                        <td>{{'%0.1f' | format(i.score|float)}} б.</td>
+                    {% endfor %}
+                    <td>{{'%0.1f' | format(el.sum|float)}} б.</td>
+                </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

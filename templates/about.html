@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Посылка {{content.id}}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <a class="btn btn-outline-primary" href="/contest/{{content.task.theme_index}}/{{content.task.task_index}}">Назад к заданию</a>
+    </div>
+    {% if content.success == -2 %}
+        <div class="row">
+            <h3 class="text-center text-danger"><b>Был отправлен неподходящий файл</b></h3>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="code"><pre>{{content.code}}</pre></div>
+            <a class="btn btn-outline-secondary" style="width:100%" href="/download/{{content.id}}">Скачать файл с кодом</a>
+        </div>
+        {% if content.success == 0 or content.success == -1 %}
+            <div class="row">
+                <div class="col-4">
+                    <span>Тестовые данные</span>
+                    <div class="code"><pre>{{content.test_data}}</pre></div>
+                </div>
+                <div class="col-4">
+                    <span>Правильный ответ</span>
+                    <div class="code"><pre>{{content.ref}}</pre></div>
+                </div>
+                <div class="col-4">
+                    <span>Полученный ответ</span>
+                    <div class="code"><pre>{{content.stu}}</pre></div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
